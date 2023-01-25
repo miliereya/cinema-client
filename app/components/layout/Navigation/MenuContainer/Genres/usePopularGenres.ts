@@ -13,6 +13,7 @@ export const usePopularGenres = () => {
 		{
 			select: ({ data }) =>
 				data
+					.filter((genre) => genre.name)
 					.map(
 						(genre) =>
 							({

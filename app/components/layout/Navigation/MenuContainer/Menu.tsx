@@ -1,11 +1,19 @@
-import { FC } from 'react'
+import dynamic from 'next/dynamic'
+import { FC, useEffect, useState } from 'react'
 
-import AuthItems from './Auth/AuthItems'
 import s from './Menu.module.scss'
 import MenuItem from './MenuItem'
 import { IMenu } from './menu.interface'
 
+const AuthItems = dynamic(() => import('./Auth/AuthItems'), { ssr: false })
+
 const Menu: FC<{ menu: IMenu }> = ({ menu: { items, title } }) => {
+	const [isRendered, setRendered] = useState<boolean>(false)
+
+	useEffect(() => {
+		setRendered(true)
+	}, [])
+
 	return (
 		<div className={s.menu}>
 			<div className={s.heading}>{title}</div>
@@ -13,7 +21,7 @@ const Menu: FC<{ menu: IMenu }> = ({ menu: { items, title } }) => {
 				{items.map((item) => (
 					<MenuItem item={item} key={item.link} />
 				))}
-				{title === 'General' ? <AuthItems /> : null}
+				{title === 'General' && <AuthItems />}
 			</ul>
 		</div>
 	)

@@ -1,26 +1,18 @@
-import { FC, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { FC, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
+import Button from '@/ui/form-elements/Button'
+import Heading from '@/ui/heading/Heading'
 
+import { useActions } from '@/hooks/useActions'
+import { useAuth } from '@/hooks/useAuth'
 
-import Button from '@/ui/form-elements/Button';
-import Heading from '@/ui/heading/Heading';
+import Meta from '@/utils/meta/Meta'
 
-
-
-import { useAuth } from '@/hooks/useAuth';
-
-
-
-import Meta from '@/utils/meta/Meta';
-
-
-
-import s from './Auth.module.scss';
-import AuthFields from './AuthFields';
-import { IAuthInput } from './auth.interface';
-import { useAuthRedirect } from './useAuthRedirect';
-
+import s from './Auth.module.scss'
+import AuthFields from './AuthFields'
+import { IAuthInput } from './auth.interface'
+import { useAuthRedirect } from './useAuthRedirect'
 
 const Auth: FC = () => {
 	useAuthRedirect()
@@ -38,12 +30,7 @@ const Auth: FC = () => {
 		mode: 'onChange',
 	})
 
-	const login = (data: any) => {
-		alert(`Login ${data}`)
-	}
-	const register = (data: any) => {
-		alert(`Reg ${data}`)
-	}
+	const { login, register } = useActions()
 
 	const onSubmit: SubmitHandler<IAuthInput> = (data) => {
 		if (type === 'login') login(data)
@@ -57,7 +44,11 @@ const Auth: FC = () => {
 			<section className={s.wrapper}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<Heading title="Auth" className="mb-6" />
-					<AuthFields formState={formState} register={registerInput} isPasswordRequired={true} />
+					<AuthFields
+						formState={formState}
+						register={registerInput}
+						isPasswordRequired={true}
+					/>
 					<div className={s.buttons}>
 						<Button
 							type="submit"
@@ -66,7 +57,7 @@ const Auth: FC = () => {
 						>
 							Login
 						</Button>
-							<Button
+						<Button
 							type="submit"
 							onClick={() => setType('register')}
 							disabled={isLoading}
