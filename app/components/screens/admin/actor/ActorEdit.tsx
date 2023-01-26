@@ -1,7 +1,7 @@
-import dynamic from 'next/dynamic'
 import { FC } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { stripHtml } from 'string-strip-html'
+
+import UploadField from '@/components/ui/form-elements/UploadField/UploadField'
 
 import SkeletonLoader from '@/ui/SkeletonLoader'
 import AdminNavigation from '@/ui/admin-navigation/AdminNavigation'
@@ -16,13 +16,6 @@ import { generateSlug } from '@/utils/string/generateSlug'
 
 import { IActorEditInput } from './actor-edit.interface'
 import { useActorEdit } from './useActorEdit'
-
-const DynamicTextEditor = dynamic(
-	() => import('@/ui/form-elements/TextEditor'),
-	{
-		ssr: false,
-	}
-)
 
 const ActorEdit: FC = () => {
 	const {
@@ -56,33 +49,37 @@ const ActorEdit: FC = () => {
 								error={errors.name}
 							/>
 
-							
-								<SlugField
-									register={register}
-									generate={() => {
-										setValue(
-											'slug',
-											generateSlug(getValues('name'))
-										)
-									}}
-									error={errors.slug}
-								/>
-						
+							<SlugField
+								register={register}
+								generate={() => {
+									setValue(
+										'slug',
+										generateSlug(getValues('name'))
+									)
+								}}
+								error={errors.slug}
+							/>
 
-							{/* <Controller
-							control={control}
-							name="photo"
-							defaultValue=""
-							render={({
-								field: { value, onChange },
-								fieldState: { error },
-							}) => (
-								//photo upload
-							)}
-							rules={{
-								required: 'Photo is required!',
-							}}
-						/> */}
+							<Controller
+								control={control}
+								name="photo"
+								defaultValue=""
+								render={({
+									field: { value, onChange },
+									fieldState: { error },
+								}) => (
+									<UploadField
+										onChange={onChange}
+										value={value}
+										error={error}
+										folder="actors"
+										placeholder="Photo"
+									/>
+								)}
+								rules={{
+									required: 'Photo is required!',
+								}}
+							/>
 						</div>
 						<Button>Update</Button>
 					</>

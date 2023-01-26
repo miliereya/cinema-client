@@ -5,15 +5,11 @@ import s from './Menu.module.scss'
 import MenuItem from './MenuItem'
 import { IMenu } from './menu.interface'
 
-const AuthItems = dynamic(() => import('./Auth/AuthItems'), { ssr: false })
+const DynamicAuthItems = dynamic(() => import('./Auth/AuthItems'), {
+	ssr: false,
+})
 
 const Menu: FC<{ menu: IMenu }> = ({ menu: { items, title } }) => {
-	const [isRendered, setRendered] = useState<boolean>(false)
-
-	useEffect(() => {
-		setRendered(true)
-	}, [])
-
 	return (
 		<div className={s.menu}>
 			<div className={s.heading}>{title}</div>
@@ -21,7 +17,7 @@ const Menu: FC<{ menu: IMenu }> = ({ menu: { items, title } }) => {
 				{items.map((item) => (
 					<MenuItem item={item} key={item.link} />
 				))}
-				{title === 'General' && <AuthItems />}
+				{title === 'General' && <DynamicAuthItems />}
 			</ul>
 		</div>
 	)
